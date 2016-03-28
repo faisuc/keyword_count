@@ -32,7 +32,7 @@ jQuery(document).ready(function($)
                     $container.empty();
                     $container.html($table_result);
                     $('#result table').dataTable( {
-                      "pageLength": 1
+                      "pageLength": $showposts
                     } );
                 }
             }
@@ -46,6 +46,7 @@ jQuery(document).ready(function($)
         var $keywords = $.trim( $(this).val() );
         var $ajaxUrl    = $( '#ajaxUrl' ).val();
         var $html = "";
+        var $input = $(this);
 
         $.ajax({
             url : $ajaxUrl ,
@@ -68,19 +69,27 @@ jQuery(document).ready(function($)
                     $html += "</ul>";
                     $( '#tag_update' ).html( $html );
                     document.getElementById('tag_update').style.display = "block";
+
                 }
             }
         });
 
-        $( document ).on( 'click' , '.search_results_link' , function(e)
-        {
-            e.preventDefault();
+    });
 
-            var $value = $(this).text();
-            $( 'input[name="keywords"] ').val( $value );
-            document.getElementById('tag_update').style.display = "none";
-        });
+    $( document ).on( 'click' , '.search_results_link' , function(e)
+    {
+        e.preventDefault();
 
+        var $value = $(this).text();
+        $( 'input[name="keywords"]' ).val( $value );
+        $( 'input[name="keywords"]' ).focus();
+
+        document.getElementById('tag_update').style.display = "none";
+    });
+
+    $( document ).on( 'mouseup' , function()
+    {
+        document.getElementById('tag_update').style.display = "none";
     });
 
 });
