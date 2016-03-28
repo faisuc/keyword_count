@@ -1,0 +1,47 @@
+#searchtable{text-align:left;}
+#searchtable td {border-bottom:1px black solid;}
+
+#acresults td{text-align:left;}
+#acresults th{text-align:left;padding:5px;}
+.center {padding-left:30px;}
+#tag_update {
+        display: block;
+        border-left: 1px solid #373737;
+        border-right: 1px solid #373737;
+        border-bottom: 1px solid #373737;
+        position:absolute;
+        z-index:1;
+}
+#tag_update ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+}
+#tag_update li{
+        display:block;
+        clear:both;
+		margin:0px;
+}
+#tag_update a {
+        width:400px;
+        display: block;
+        padding: .2em .3em;
+        text-decoration: none;
+        color: #fff;
+        background-color: #1B1B1C;
+        text-align: left;
+}
+#tag_update a:hover{
+        color: #fff;
+        background-color: #373737;
+        background-image: none;
+}
+#result table {
+    margin: 0 auto;
+}
+
+#search-query {
+    width:300px;
+    padding:5px 10px;
+    margin-left:10px;
+}
