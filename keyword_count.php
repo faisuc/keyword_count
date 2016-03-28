@@ -73,6 +73,7 @@ class Epik_Keyword_Counter
         {
             wp_enqueue_script( self::SLUG , plugins_url( 'js/script.js' , __FILE__ ) , array( 'jquery' ) );
             wp_enqueue_style( self::SLUG , plugins_url( 'css/style.css' , __FILE__ ) );
+            wp_enqueue_script('oxfam_js_cookie', 'http://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js', array( 'jquery' ), '1.10.11', true);
         }
     }
 
@@ -155,13 +156,13 @@ class Epik_Keyword_Counter
     public function generate_table( $posts , $keywords )
     {
         $html = "<table border=1>";
-        $html .= "<tr>";
-        $html .= "<td>Post Title</td>";
+        $html .= "<thead><tr>";
+        $html .= "<th>Post Title</th>";
         foreach ( $keywords as $word )
         {
-            $html .= "<td>Count for '" . $word . "'</td>";
+            $html .= "<th>Count for '" . $word . "'</th>";
         }
-        $html .= "</tr>";
+        $html .= "<thead></tr><tbody>";
         foreach ( $posts as $key => $post )
         {
             $html .= "<tr>";
@@ -174,7 +175,7 @@ class Epik_Keyword_Counter
 
             $html .= "</tr>";
         }
-        $html .= "</table>";
+        $html .= "</tbody></table>";
 
         return $html;
     }

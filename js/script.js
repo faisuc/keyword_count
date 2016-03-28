@@ -31,6 +31,9 @@ jQuery(document).ready(function($)
                     var $table_result = data.result;
                     $container.empty();
                     $container.html($table_result);
+                    $('#result table').dataTable( {
+                      "pageLength": 1
+                    } );
                 }
             }
         });
