@@ -89,15 +89,16 @@ class Epik_Keyword_Counter
             $keywords   = trim( $_GET['keywords'] );
             $orderby    = $_GET['orderby'] == "" ? "date" : $_GET['orderby'];
             $sort       = $_GET['sort'] == "" ? "ASC" : $_GET['sort'];
+            $paged      = (int) $_GET['paged'];
 
             if ( $orderby == 'category' )
             {
                 $orderby = 'parent';
             }
 
-            $posts = $this->get_posts( $showposts , $orderby , $sort );
+            $posts = $this->get_posts( $showposts , $orderby , $sort , $paged );
 
-            if ( count( $posts ) > 0 && $keywords != "" )
+            if ( count( $posts->posts ) > 0 && $keywords != "" )
             {
                 $table = apply_filters( 'generate_table' , $posts , explode( "," , $keywords ) );
 
@@ -131,10 +132,12 @@ class Epik_Keyword_Counter
         }
     }
 
-    private function get_posts( $showposts = 50 , $orderby = 'date' , $sort = 'ASC' )
+    private function get_posts( $showposts = 50 , $orderby = 'date' , $sort = 'ASC' , $paged )
     {
+
         $args = array(
         	'posts_per_page'       => $showposts ,
+            'paged'                => $paged ,
         	'offset'               => 0 ,
         	'category'             => '' ,
         	'category_name'        => '' ,
@@ -154,7 +157,7 @@ class Epik_Keyword_Counter
 
         $query = new WP_Query($args);
 
-        return $query->posts;
+        return $query;
     }
 
     public function generate_table( $posts , $keywords )
@@ -167,18 +170,23 @@ class Epik_Keyword_Counter
             $html .= "<th>Count for '" . $word . "'</th>";
         }
         $html .= "<thead></tr><tbody>";
-        foreach ( $posts as $key => $post )
-        {
-            $html .= "<tr>";
-            $html .= "<td>" . $post->post_title . "</td>";
 
-            foreach ( $keywords as $keyword )
-            {
-                $html .= "<td>" . $this->count_keywords( $post->post_content , $keyword ) . "</td>";
-            }
+        if ( $posts->have_posts() ) {
+            global $post;
+            while ( $posts->have_posts() ) : $posts->the_post();
+                $html .= "<tr>";
+                $html .= "<td>" . $post->post_title . "</td>";
 
-            $html .= "</tr>";
+                foreach ( $keywords as $keyword )
+                {
+                    $html .= "<td>" . $this->count_keywords( $post->post_content , $keyword ) . "</td>";
+                }
+
+                $html .= "</tr>";
+            endwhile;
+		    wp_reset_postdata();
         }
+
         $html .= "</tbody></table>";
 
         return $html;

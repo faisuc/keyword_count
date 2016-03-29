@@ -1,17 +1,8 @@
 jQuery(document).ready(function($)
 {
 
-    $( '#alt_form' ).submit(function()
+    function ajax_form_submit( $ajaxUrl , $container , $showposts , $keywords , $orderby , $sort , $paged )
     {
-        var $form       = $(this);
-        var $ajaxUrl    = $( '#ajaxUrl' ).val();
-        var $container  = $( '#result' );
-
-        var $showposts  = $.trim( $( 'input[name="showposts"]' ).val() );
-        var $keywords   = $.trim( $( 'input[name="keywords"]' ).val() );
-        var $orderby    = $.trim( $( 'select[name="orderby"]' ).val() );
-        var $sort       = $.trim( $( 'select[name="sort"]' ).val() );
-
         $.ajax({
             url : $ajaxUrl ,
             type : 'GET' ,
@@ -22,7 +13,8 @@ jQuery(document).ready(function($)
                 showposts   : $showposts ,
                 keywords    : $keywords ,
                 orderby     : $orderby ,
-                sort        : $sort
+                sort        : $sort ,
+                paged       : $paged
             } ,
             success : function( data )
             {
@@ -34,6 +26,20 @@ jQuery(document).ready(function($)
                 }
             }
         });
+    }
+
+    $( '#alt_form' ).submit(function()
+    {
+        var $form       = $(this);
+        var $ajaxUrl    = $( '#ajaxUrl' ).val();
+        var $container  = $( '#result' );
+
+        var $showposts  = $.trim( $( 'input[name="showposts"]' ).val() );
+        var $keywords   = $.trim( $( 'input[name="keywords"]' ).val() );
+        var $orderby    = $.trim( $( 'select[name="orderby"]' ).val() );
+        var $sort       = $.trim( $( 'select[name="sort"]' ).val() );
+
+        ajax_form_submit( $ajaxUrl , $container , $showposts , $keywords , $orderby , $sort , 1 );
 
         return false;
     });
