@@ -175,7 +175,7 @@ class Epik_Keyword_Counter
             global $post;
             while ( $posts->have_posts() ) : $posts->the_post();
                 $html .= "<tr>";
-                $html .= "<td>" . $post->post_title . "</td>";
+                $html .= "<td><a href='" . get_edit_post_link($post->ID) . "'>" . $post->post_title . "</a></td>";
 
                 foreach ( $keywords as $keyword )
                 {
