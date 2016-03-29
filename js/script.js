@@ -9,12 +9,12 @@ jQuery(document).ready(function($)
 
         var $showposts  = $.trim( $( 'input[name="showposts"]' ).val() );
         var $keywords   = $.trim( $( 'input[name="keywords"]' ).val() );
-        var $orderby    = $.trim( $( 'input[name="orderby"]:checked' ).val() );
-        var $sort       = $.trim( $( 'input[name="sort"]:checked' ).val() );
+        var $orderby    = $.trim( $( 'select[name="orderby"]' ).val() );
+        var $sort       = $.trim( $( 'select[name="sort"]' ).val() );
 
         $.ajax({
             url : $ajaxUrl ,
-            type : 'POST' ,
+            type : 'GET' ,
             dataType : 'json' ,
             data : {
                 action      : 'form_submit' ,
@@ -31,9 +31,6 @@ jQuery(document).ready(function($)
                     var $table_result = data.result;
                     $container.empty();
                     $container.html($table_result);
-                    $('#result table').dataTable( {
-                      "pageLength": $showposts
-                    } );
                 }
             }
         });

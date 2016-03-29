@@ -9,6 +9,10 @@
  * Text Domain: epik-keyword-counter
 */
 
+if ( ! defined( 'ABSPATH' ) )
+{
+    exit;
+}
 
 class Epik_Keyword_Counter
 {
@@ -79,12 +83,12 @@ class Epik_Keyword_Counter
 
     public function ajax_form_submit()
     {
-        if ( isset( $_POST[ 'form_submit' ]))
+        if ( isset( $_GET[ 'form_submit' ]))
         {
-            $showposts  = trim( $_POST['showposts'] );
-            $keywords   = trim( $_POST['keywords'] );
-            $orderby    = $_POST['orderby'];
-            $sort       = $_POST['sort'];
+            $showposts  = trim( $_GET['showposts'] );
+            $keywords   = trim( $_GET['keywords'] );
+            $orderby    = $_GET['orderby'] == "" ? "date" : $_GET['orderby'];
+            $sort       = $_GET['sort'] == "" ? "ASC" : $_GET['sort'];
 
             if ( $orderby == 'category' )
             {
@@ -155,9 +159,9 @@ class Epik_Keyword_Counter
 
     public function generate_table( $posts , $keywords )
     {
-        $html = "<table border=1>";
+        $html = "<table class='wp-list-table widefat fixed striped posts'>";
         $html .= "<thead><tr>";
-        $html .= "<th>Post Title</th>";
+        $html .= "<th class='manage-column column-title column-primary'>Post Title</th>";
         foreach ( $keywords as $word )
         {
             $html .= "<th>Count for '" . $word . "'</th>";
@@ -232,6 +236,9 @@ class Epik_Keyword_Counter
 
 }
 
-$epik_keyword_counter = new Epik_Keyword_Counter();
+if ( is_admin() )
+{
+    $epik_keyword_counter = new Epik_Keyword_Counter();
+}
 
 register_activation_hook( __FILE__ , array( 'Epik_Keyword_Counter', 'install' ) );
